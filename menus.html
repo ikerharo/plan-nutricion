@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Menus — Nutricion</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .section-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    margin-bottom: 18px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .section-header h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-header .section-meta {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .section-header .section-arrow {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    transition: transform 0.3s;
+  }
+
+  .section-card.open .section-arrow {
+    transform: rotate(180deg);
+  }
+
+  .section-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .section-card.open .section-body {
+    max-height: 5000px;
+  }
+
+  .section-inner {
+    padding: 0 16px 16px;
+  }
+
+  /* Recipe cards inside sections */
+  .recipe-card {
+    background: var(--bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .recipe-card:last-child {
+    margin-bottom: 0;
+  }
+
+  .recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    gap: 10px;
+  }
+
+  .recipe-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .recipe-letter {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .letter-green { background: var(--accent-light); color: var(--accent-dark); }
+  .letter-warm { background: var(--warm-light); color: var(--warm); }
+  .letter-earth { background: var(--earth-light); color: var(--earth); }
+  .letter-muted { background: #F0EDEA; color: var(--text-muted); }
+
+  .recipe-name {
+    font-weight: 600;
+    font-size: 0.88rem;
+  }
+
+  .recipe-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .recipe-time {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .recipe-arrow {
+    font-size: 0.65rem;
+    color: var(--text-light);
+    transition: transform 0.3s;
+  }
+
+  .recipe-card.open .recipe-arrow {
+    transform: rotate(180deg);
+  }
+
+  .recipe-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+
+  .recipe-card.open .recipe-body {
+    max-height: 800px;
+  }
+
+  .recipe-content {
+    padding: 0 14px 14px;
+    border-top: 1px solid var(--card-border);
+  }
+
+  .recipe-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+  }
+
+  .recipe-content li {
+    padding: 5px 0;
+    padding-left: 16px;
+    position: relative;
+    font-size: 0.82rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .recipe-content li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--card-border);
+  }
+
+  .recipe-protein {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    background: var(--accent-light);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .recipe-note {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* Subsection labels inside sections */
+  .subsection-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    padding: 14px 0 8px;
+  }
+
+  /* Protein & veggie chips */
+  .chip-section {
+    margin: 12px 0 6px;
+  }
+
+  .chip-section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+
+  /* Snack list */
+  .snack-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 0.84rem;
+    border-bottom: 1px solid rgba(232,224,216,0.3);
+  }
+
+  .snack-item:last-child { border-bottom: none; }
+
+  .snack-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  /* Notes alert */
+  .notes-section {
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Menus</h1>
+  <p class="subtitle">Desayunos, comidas, cenas y snacks</p>
+</header>
+
+<main class="content">
+
+  <!-- ==================== DESAYUNOS ==================== -->
+  <div class="section-card" id="desayunos">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>Desayunos</h2>
+      <span class="section-meta">~50g prot</span>
+      <span class="section-arrow">&#9662;</span>
+    </div>
+    <div class="section-body">
+      <div class="section-inner">
+
+        <div class="alert alert-info" style="margin-top:0">Todos van con Jugo 1 + suplementos AM</div>
+
+        <!-- A: Omelette -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-green">A</div>
+              <span class="recipe-name">Omelette</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-time">8 min</span>
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>3-4 huevos</li>
+                <li>Relleno: espinaca, pavo, pollo desmenuzado, tocino de pavo, verduras, tomates cherry</li>
+                <li>1/2 aguacate</li>
+                <li>1 scoop Isopure en Jugo 1 o agua aparte</li>
+              </ul>
+              <span class="recipe-protein">~50-55g proteina</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- B: Pancakes proteicos -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-warm">B</div>
+              <span class="recipe-name">Pancakes proteicos</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-time">10 min</span>
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>2 huevos + 40g avena + 1 scoop Isopure + 1/2 platano — mezclar y a sarten</li>
+                <li>Topping: miel, platano, crema de almendra, nueces, berries</li>
+                <li>1 scoop Isopure en Jugo 1 si necesitas mas proteina</li>
+              </ul>
+              <span class="recipe-protein">~38-50g proteina</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- C: Tacos -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-earth">C</div>
+              <span class="recipe-name">Tacos</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-time">5-10 min</span>
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>2-3 tortillas de maiz</li>
+                <li>Proteina: huevo revuelto, pollo desmenuzado, chorizo pavo, salmon, camarones</li>
+                <li>Toppings: aguacate, salsa roja, cebolla, cilantro, limon</li>
+                <li>1 scoop Isopure en Jugo 1</li>
+              </ul>
+              <span class="recipe-protein">~45-55g proteina</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== COMIDAS ==================== -->
+  <div class="section-card" id="comidas">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>Comidas</h2>
+      <span class="section-meta">~75g prot</span>
+      <span class="section-arrow">&#9662;</span>
+    </div>
+    <div class="section-body">
+      <div class="section-inner">
+
+        <div class="alert alert-info" style="margin-top:0">Todas con ensalada "Jugo 2" + vinagre de manzana con agua + suplementos comida</div>
+
+        <p class="subsection-label">6 Formatos</p>
+
+        <!-- A: Plato con arroz -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-green">A</div>
+              <span class="recipe-name">Plato con arroz</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-time">15 min</span>
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>Proteina (250g)</li>
+                <li>Arroz o quinoa (1 taza)</li>
+                <li>Ensalada "Jugo 2"</li>
+                <li>1/2 aguacate</li>
+              </ul>
+              <span class="recipe-protein">~65-75g proteina</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- B: Bowl -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-warm">B</div>
+              <span class="recipe-name">Bowl</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-time">5 min*</span>
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>Proteina (250g)</li>
+                <li>Arroz o quinoa</li>
+                <li>Verduras cocidas</li>
+                <li>Aguacate + ensalada "Jugo 2" + salsa</li>
+              </ul>
+              <span class="recipe-protein">~65-75g proteina</span>
+              <p class="recipe-note">*5 min si hay prep previo</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- C: Tacos -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-earth">C</div>
+              <span class="recipe-name">Tacos (version comida)</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-time">10 min</span>
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>3-4 tortillas de maiz</li>
+                <li>Proteina</li>
+                <li>Aguacate + col morada + salsa roja + cilantro + limon</li>
+              </ul>
+              <span class="recipe-protein">~55-65g proteina</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- D: Pasta sin gluten -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-green">D</div>
+              <span class="recipe-name">Pasta sin gluten</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-time">15 min</span>
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>Pasta de lenteja, garbanzo o arroz</li>
+                <li>Proteina</li>
+                <li>Salsa de jitomate casera o aceite de oliva con ajo</li>
+                <li>Verduras</li>
+              </ul>
+              <span class="recipe-protein">~60-70g proteina</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- E: Crema + proteina -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-warm">E</div>
+              <span class="recipe-name">Crema + proteina</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-time">20 min</span>
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>Crema de verdura: esparrago, brocoli, calabaza o camote</li>
+                <li>Proteina adentro o aparte</li>
+              </ul>
+              <span class="recipe-protein">~55-65g proteina</span>
+              <p class="recipe-note">Batch para 3-4 dias</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- F: Papa hervida -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-earth">F</div>
+              <span class="recipe-name">Proteina + papa hervida</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-time">15 min</span>
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>Proteina</li>
+                <li>Papas hervidas</li>
+                <li>Verdura + aguacate</li>
+              </ul>
+              <span class="recipe-protein">~60-70g proteina</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proteinas que rotan -->
+        <div class="chip-section">
+          <p class="chip-section-title">Proteinas que rotan</p>
+          <div class="chip-grid">
+            <span class="chip chip-accent">Pollo</span>
+            <span class="chip chip-accent">Salmon</span>
+            <span class="chip chip-accent">Arrachera</span>
+            <span class="chip chip-accent">Filete de res</span>
+            <span class="chip chip-accent">Bistec</span>
+            <span class="chip chip-accent">Carne molida</span>
+            <span class="chip chip-accent">Camarones</span>
+            <span class="chip chip-accent">Atun fresco</span>
+            <span class="chip chip-accent">Lomo de cerdo</span>
+          </div>
+        </div>
+
+        <!-- Verduras -->
+        <div class="chip-section">
+          <p class="chip-section-title">Verduras</p>
+          <div class="chip-grid">
+            <span class="chip">Brocoli</span>
+            <span class="chip">Col morada</span>
+            <span class="chip">Calabaza</span>
+            <span class="chip">Zanahoria</span>
+            <span class="chip">Chayote</span>
+            <span class="chip">Espinaca</span>
+            <span class="chip">Esparragos</span>
+            <span class="chip">Tomates cherry</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CENAS ==================== -->
+  <div class="section-card" id="cenas">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>Cenas</h2>
+      <span class="section-meta">~45g prot</span>
+      <span class="section-arrow">&#9662;</span>
+    </div>
+    <div class="section-body">
+      <div class="section-inner">
+
+        <div class="alert alert-info" style="margin-top:0">Todas con Jugo 3 + suplementos noche + caldo con L-glutamina</div>
+
+        <p class="subsection-label">Dias con entreno AM (cena normal)</p>
+
+        <!-- A: Crema + proteina -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-green">A</div>
+              <span class="recipe-name">Crema + proteina</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>Crema de verdura + pollo/pescado adentro o aparte</li>
+                <li>Caldo con L-glutamina (puede ser la crema misma)</li>
+              </ul>
+              <span class="recipe-protein">~45g proteina</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- B: Sopa de pollo -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-warm">B</div>
+              <span class="recipe-name">Sopa de pollo</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>Caldo de hueso con pollo + verduras (papa, calabaza, chayote, espinaca)</li>
+                <li>L-glutamina disuelta al servir</li>
+              </ul>
+              <span class="recipe-protein">~45-55g proteina</span>
+              <p class="recipe-note">Una olla, un plato</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- C: Proteina + verdura -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-earth">C</div>
+              <span class="recipe-name">Proteina + verdura</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>Pescado/pollo a la plancha + verduras al vapor o asadas</li>
+                <li>Sin carbo pesado</li>
+                <li>Caldo con L-glutamina aparte</li>
+              </ul>
+              <span class="recipe-protein">~40-50g proteina</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- D: Proteina + papa hervida -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-muted">D</div>
+              <span class="recipe-name">Proteina + papa hervida</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>Pescado/pollo + papa hervida + verdura</li>
+                <li>Caldo con L-glutamina aparte</li>
+              </ul>
+              <span class="recipe-protein">~45g proteina</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="subsection-label">Dias con entreno PM (post-entreno)</p>
+
+        <!-- Shake -->
+        <div class="recipe-card" onclick="toggleRecipe(this)">
+          <div class="recipe-header">
+            <div class="recipe-header-left">
+              <div class="recipe-letter letter-warm">S</div>
+              <span class="recipe-name">Shake Isopure + complemento</span>
+            </div>
+            <div class="recipe-meta">
+              <span class="recipe-time">3 min</span>
+              <span class="recipe-arrow">&#9662;</span>
+            </div>
+          </div>
+          <div class="recipe-body">
+            <div class="recipe-content">
+              <ul>
+                <li>1-2 scoops Isopure (25-50g proteina)</li>
+                <li>Platano o avena (para que no caiga en estomago vacio)</li>
+                <li>Jugo 3 como bebida aparte</li>
+                <li>L-glutamina en agua o caldo</li>
+              </ul>
+              <span class="recipe-protein">~45-50g proteina</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SNACKS ==================== -->
+  <div class="section-card" id="snacks">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>Snacks</h2>
+      <span class="section-meta">2 momentos</span>
+      <span class="section-arrow">&#9662;</span>
+    </div>
+    <div class="section-body">
+      <div class="section-inner">
+
+        <p class="subsection-label">Media manana (~10:15 AM)</p>
+        <div class="recipe-note" style="margin-bottom:10px">Con probiotico + GOS</div>
+        <div class="snack-item"><span class="snack-dot"></span> Berries (favoritos)</div>
+        <div class="snack-item"><span class="snack-dot"></span> Fruta sola o con chile / limon</div>
+        <div class="snack-item"><span class="snack-dot"></span> Nueces / almendras</div>
+        <div class="snack-item"><span class="snack-dot"></span> Crema de almendra / cacahuate con fruta</div>
+        <div class="snack-item"><span class="snack-dot"></span> Manzana o platano</div>
+
+        <p class="subsection-label" style="margin-top:16px">Tarde (~4:30 PM)</p>
+        <div class="recipe-note" style="margin-bottom:10px">Con psyllium + cayena (opcional)</div>
+        <div class="snack-item"><span class="snack-dot"></span> Jicama, pepino, zanahoria con limon</div>
+        <div class="snack-item"><span class="snack-dot"></span> Guacamole con verduras</div>
+        <div class="snack-item"><span class="snack-dot"></span> Hummus con verduras</div>
+        <div class="snack-item"><span class="snack-dot"></span> Huevo duro</div>
+        <div class="snack-item"><span class="snack-dot"></span> Fruta con chile</div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ENSALADA "JUGO 2" ==================== -->
+  <div class="section-card" id="ensalada">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>Ensalada "Jugo 2"</h2>
+      <span class="section-meta">guarnicion fija</span>
+      <span class="section-arrow">&#9662;</span>
+    </div>
+    <div class="section-body">
+      <div class="section-inner">
+
+        <div class="alert alert-good" style="margin-top:0">Reemplaza el Jugo 2 liquido. Mismos ingredientes, en plato.</div>
+
+        <div class="ingredient-row">
+          <span class="ingredient-name">Jitomate</span>
+          <span class="ingredient-benefit">1 grande o cherry partidos</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Apio</span>
+          <span class="ingredient-benefit">2 varas picadas</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Perejil</span>
+          <span class="ingredient-benefit">1 manojo chico</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Cebolla morada</span>
+          <span class="ingredient-benefit">2-3 rodajas finas</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Limon</span>
+          <span class="ingredient-benefit">jugo + ralladura</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Aceite de oliva EV</span>
+          <span class="ingredient-benefit">2 cdas</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Sal de mar</span>
+          <span class="ingredient-benefit">al gusto</span>
+        </div>
+        <div class="ingredient-row">
+          <span class="ingredient-name">Salsa roja / Valentina</span>
+          <span class="ingredient-benefit">al gusto</span>
+        </div>
+
+        <div class="alert alert-info" style="margin-top:12px">
+          <strong>Prep batch:</strong> Picar para 3 dias, guardar sin alino. Alinar al momento. 10 min para 3 dias.
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NOTAS ==================== -->
+  <div class="card notes-section">
+    <div class="card-title">Notas importantes</div>
+    <div class="alert alert-warn" style="margin-top:0">
+      <strong>Lacteos:</strong> eliminados hasta Jun 16. Despues reintroducir gradual.
+    </div>
+    <div class="alert alert-warn">
+      <strong>Gluten:</strong> eliminado hasta Jun 16. Tortilla de maiz es OK.
+    </div>
+    <div class="alert alert-info">
+      <strong>Proteina:</strong> Isopure 0 Carbs (whey isolate, sin caseina).
+    </div>
+    <div class="alert alert-info">
+      <strong>Cafe:</strong> 3 espressos max, nunca en ayunas, no despues de 4pm.
+    </div>
+    <div class="alert alert-bad">
+      <strong>Excluidos:</strong> frijoles (no le gustan), mostaza.
+    </div>
+  </div>
+
+</main>
+
+<!-- ==================== BOTTOM NAV ==================== -->
+<nav class="bottom-nav">
+  <a href="dashboard.html" class="nav-item">
+    <span class="nav-icon">&#9783;</span>
+    Plan
+  </a>
+  <a href="compras.html" class="nav-item">
+    <span class="nav-icon">&#9745;</span>
+    Compras
+  </a>
+  <a href="menus.html" class="nav-item active">
+    <span class="nav-icon">&#9832;</span>
+    Menus
+  </a>
+  <a href="jugos.html" class="nav-item">
+    <span class="nav-icon">&#9881;</span>
+    Jugos
+  </a>
+</nav>
+
+<script>
+  function toggleSection(header) {
+    const card = header.parentElement;
+    card.classList.toggle('open');
+  }
+
+  function toggleRecipe(card) {
+    // Prevent toggling section when clicking recipe
+    event.stopPropagation();
+    card.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>

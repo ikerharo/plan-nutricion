@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Despensa &amp; Compras</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { padding-bottom: 20px; }
+
+  /* Toggle views */
+  .view-toggle {
+    display: flex;
+    background: #F0EDEA;
+    border-radius: 10px;
+    padding: 3px;
+    margin-bottom: 16px;
+  }
+  .view-btn {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.25s;
+    text-align: center;
+  }
+  .view-btn.active {
+    background: var(--card);
+    color: var(--text);
+    box-shadow: 0 1px 4px rgba(45,42,38,0.1);
+  }
+
+  /* Summary card */
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+  }
+  .summary-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--text);
+  }
+  .summary-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .summary-block {
+    text-align: center;
+    flex: 1;
+  }
+  .summary-block.ok .summary-number { color: var(--accent); }
+  .summary-block.low .summary-number { color: var(--warm); }
+  .summary-block.out .summary-number { color: var(--danger); }
+
+  /* Inventory item */
+  .inv-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(232,224,216,0.4);
+    min-height: 52px;
+  }
+  .inv-item:last-child { border-bottom: none; }
+
+  .inv-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .inv-status.ok { background: var(--accent); }
+  .inv-status.low { background: var(--warm); }
+  .inv-status.out { background: var(--danger); }
+
+  .inv-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .inv-name {
+    font-size: 0.86rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .inv-need {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .inv-stepper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+  }
+  .step-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--card-border);
+    background: var(--card);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .step-btn:first-child { border-radius: 8px 0 0 8px; }
+  .step-btn:last-child { border-radius: 0 8px 8px 0; }
+  .step-btn:active {
+    background: var(--accent-light);
+    border-color: var(--accent);
+  }
+  .step-val {
+    width: 36px;
+    height: 36px;
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    background: #FAFAF8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .step-val.zero {
+    color: var(--danger);
+  }
+
+  /* Buy badge */
+  .buy-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--danger-light);
+    color: var(--danger);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .buy-badge.ok {
+    background: var(--accent-light);
+    color: var(--accent-dark);
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state .icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .empty-state p { font-size: 0.88rem; }
+
+  /* Category */
+  .category-section { margin-bottom: 6px; }
+
+  .offline-banner {
+    display: none;
+    padding: 8px 14px;
+    background: var(--warm-light);
+    border: 1px solid var(--warm);
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    color: var(--warm);
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .offline-banner.show { display: block; }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Despensa</h1>
+  <p class="subtitle">Inventario y lista de compras</p>
+</header>
+
+<div class="content">
+
+  <div class="sync-bar">
+    <div>
+      <span class="sync-dot" id="syncDot"></span>
+      <span id="syncStatus">Modo local</span>
+    </div>
+    <span style="font-size:0.72rem; color:var(--text-light)" id="lastUpdate"></span>
+  </div>
+
+  <div class="offline-banner" id="offlineBanner">
+    Sin conexion — los cambios se guardan localmente
+  </div>
+
+  <!-- Summary -->
+  <div class="card">
+    <div class="summary-row">
+      <div class="summary-block ok">
+        <div class="summary-number" id="countOk">0</div>
+        <div class="summary-label">Tengo</div>
+      </div>
+      <div class="summary-block low">
+        <div class="summary-number" id="countLow">0</div>
+        <div class="summary-label">Poco</div>
+      </div>
+      <div class="summary-block out">
+        <div class="summary-number" id="countOut">0</div>
+        <div class="summary-label">Sin stock</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View toggle -->
+  <div class="view-toggle">
+    <button class="view-btn active" onclick="setView('inventory')" id="btnInventory">Inventario</button>
+    <button class="view-btn" onclick="setView('buy')" id="btnBuy">Comprar</button>
+  </div>
+
+  <div id="listContainer"></div>
+
+</div>
+
+<!-- No nav — pagina compartida -->
+
+<script>
+// ============================================================
+// GOOGLE SHEETS CONFIG
+// ============================================================
+const SHEET_URL = '';  // <-- PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+
+// ============================================================
+// INVENTORY DATA
+// need = cantidad semanal necesaria (referencia)
+// have = stock actual (editable)
+// unit = unidad de medida
+// ============================================================
+const DEFAULT_ITEMS = [
+  // Proteinas
+  {cat: "Proteinas", name: "Pechuga de pollo", need: 1.5, have: 0, unit: "kg"},
+  {cat: "Proteinas", name: "Salmon (filetes)", need: 4, have: 0, unit: "pzas"},
+  {cat: "Proteinas", name: "Pescado blanco", need: 3, have: 0, unit: "filetes"},
+  {cat: "Proteinas", name: "Arrachera / res", need: 1, have: 0, unit: "kg"},
+  {cat: "Proteinas", name: "Carne molida 90/10", need: 500, have: 0, unit: "g"},
+  {cat: "Proteinas", name: "Camarones", need: 500, have: 0, unit: "g"},
+  {cat: "Proteinas", name: "Huevos", need: 24, have: 0, unit: "pzas"},
+  {cat: "Proteinas", name: "Pavo rebanado (deli)", need: 200, have: 0, unit: "g"},
+  {cat: "Proteinas", name: "Huesos para caldo", need: 1, have: 0, unit: "kg"},
+
+  // Verduras
+  {cat: "Verduras", name: "Brocoli", need: 5, have: 0, unit: "cabezas"},
+  {cat: "Verduras", name: "Col morada", need: 2, have: 0, unit: "pzas"},
+  {cat: "Verduras", name: "Calabaza", need: 4, have: 0, unit: "pzas"},
+  {cat: "Verduras", name: "Zanahoria", need: 7, have: 0, unit: "pzas"},
+  {cat: "Verduras", name: "Chayote", need: 5, have: 0, unit: "pzas"},
+  {cat: "Verduras", name: "Espinaca", need: 2, have: 0, unit: "bolsas"},
+  {cat: "Verduras", name: "Esparragos", need: 2, have: 0, unit: "manojos"},
+  {cat: "Verduras", name: "Tomates cherry", need: 2, have: 0, unit: "charolas"},
+  {cat: "Verduras", name: "Jitomate", need: 1, have: 0, unit: "kg"},
+  {cat: "Verduras", name: "Apio", need: 2, have: 0, unit: "manojos"},
+  {cat: "Verduras", name: "Perejil", need: 3, have: 0, unit: "manojos"},
+  {cat: "Verduras", name: "Cebolla morada", need: 4, have: 0, unit: "pzas"},
+  {cat: "Verduras", name: "Papa", need: 1.5, have: 0, unit: "kg"},
+  {cat: "Verduras", name: "Camote", need: 4, have: 0, unit: "pzas"},
+  {cat: "Verduras", name: "Pepino", need: 5, have: 0, unit: "pzas"},
+  {cat: "Verduras", name: "Lechuga", need: 2, have: 0, unit: "pzas"},
+  {cat: "Verduras", name: "Jicama", need: 2, have: 0, unit: "pzas"},
+
+  // Para jugos
+  {cat: "Para jugos", name: "Sabila / aloe", need: 4, have: 0, unit: "pencas"},
+  {cat: "Para jugos", name: "Jengibre fresco", need: 300, have: 0, unit: "g"},
+  {cat: "Para jugos", name: "Curcuma fresca", need: 150, have: 0, unit: "g"},
+
+  // Frutas
+  {cat: "Frutas", name: "Berries variados", need: 3, have: 0, unit: "charolas"},
+  {cat: "Frutas", name: "Platano", need: 7, have: 0, unit: "pzas"},
+  {cat: "Frutas", name: "Manzana verde", need: 4, have: 0, unit: "pzas"},
+  {cat: "Frutas", name: "Manzana roja", need: 11, have: 0, unit: "pzas"},
+  {cat: "Frutas", name: "Pina", need: 1, have: 0, unit: "pza"},
+  {cat: "Frutas", name: "Limon", need: 20, have: 0, unit: "pzas"},
+  {cat: "Frutas", name: "Papaya", need: 2, have: 0, unit: "pzas"},
+  {cat: "Frutas", name: "Aguacate", need: 8, have: 0, unit: "pzas"},
+
+  // Despensa
+  {cat: "Despensa", name: "Arroz", need: 1, have: 0, unit: "kg"},
+  {cat: "Despensa", name: "Quinoa", need: 500, have: 0, unit: "g"},
+  {cat: "Despensa", name: "Avena", need: 1, have: 0, unit: "bolsa"},
+  {cat: "Despensa", name: "Tortilla de maiz", need: 2, have: 0, unit: "paquetes"},
+  {cat: "Despensa", name: "Pasta sin gluten", need: 2, have: 0, unit: "paquetes"},
+  {cat: "Despensa", name: "Aceite de oliva EV", need: 1, have: 0, unit: "botella"},
+  {cat: "Despensa", name: "Aceite de coco", need: 1, have: 0, unit: "frasco"},
+  {cat: "Despensa", name: "Nueces", need: 200, have: 0, unit: "g"},
+  {cat: "Despensa", name: "Almendras", need: 200, have: 0, unit: "g"},
+  {cat: "Despensa", name: "Crema de almendra", need: 1, have: 0, unit: "frasco"},
+  {cat: "Despensa", name: "Vinagre de manzana", need: 1, have: 0, unit: "botella"},
+  {cat: "Despensa", name: "Miel de abeja pura", need: 1, have: 0, unit: "frasco"},
+  {cat: "Despensa", name: "Hummus", need: 2, have: 0, unit: "botes"},
+  {cat: "Despensa", name: "Leche de coco", need: 2, have: 0, unit: "latas"},
+
+  // Especias
+  {cat: "Especias", name: "Pimienta negra molida", need: 1, have: 0, unit: "frasco"},
+  {cat: "Especias", name: "Mostaza molida", need: 1, have: 0, unit: "frasco"},
+  {cat: "Especias", name: "Pimienta de cayena", need: 1, have: 0, unit: "frasco"},
+  {cat: "Especias", name: "Sal de mar", need: 1, have: 0, unit: "bolsa"},
+  {cat: "Especias", name: "Cilantro fresco", need: 2, have: 0, unit: "manojos"},
+  {cat: "Especias", name: "Salsa roja", need: 1, have: 0, unit: "frasco"},
+  {cat: "Especias", name: "Valentina", need: 1, have: 0, unit: "botella"},
+  {cat: "Especias", name: "Soya", need: 1, have: 0, unit: "botella"},
+
+  // Suplementos
+  {cat: "Suplementos", name: "Omega-3 EPA+DHA", need: 1, have: 0, unit: "frasco"},
+  {cat: "Suplementos", name: "Vitamina D3 4000 IU", need: 1, have: 0, unit: "frasco"},
+  {cat: "Suplementos", name: "Creatina monohidrato", need: 1, have: 0, unit: "bolsa"},
+  {cat: "Suplementos", name: "Magnesio glicinato", need: 1, have: 0, unit: "frasco"},
+  {cat: "Suplementos", name: "Psyllium sin azucar", need: 1, have: 0, unit: "bote"},
+  {cat: "Suplementos", name: "Culturelle LGG", need: 1, have: 0, unit: "caja"},
+  {cat: "Suplementos", name: "GOS prebiotico", need: 1, have: 0, unit: "bolsa"},
+  {cat: "Suplementos", name: "Zinc carnosine", need: 1, have: 0, unit: "frasco"},
+  {cat: "Suplementos", name: "DGL masticable", need: 1, have: 0, unit: "frasco"},
+  {cat: "Suplementos", name: "L-glutamina polvo", need: 1, have: 0, unit: "bolsa"},
+  {cat: "Suplementos", name: "Extracto alcachofa", need: 1, have: 0, unit: "frasco"},
+  {cat: "Suplementos", name: "Complejo B", need: 1, have: 0, unit: "frasco"},
+  {cat: "Suplementos", name: "Vitamina C 500mg", need: 1, have: 0, unit: "frasco"},
+  {cat: "Suplementos", name: "Sal Epsom", need: 1, have: 0, unit: "kg"},
+  {cat: "Suplementos", name: "Isopure 0 Carbs", need: 1, have: 0, unit: "bote"},
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let items = [];
+let currentView = 'inventory'; // 'inventory' or 'buy'
+let useSheets = !!SHEET_URL;
+let isOnline = navigator.onLine;
+let saveTimer = null;
+
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('load', init);
+window.addEventListener('online', () => { isOnline = true; updateSyncUI(); });
+window.addEventListener('offline', () => { isOnline = false; updateSyncUI(); });
+
+async function init() {
+  // Try loading from sheets first, then local, then defaults
+  if (useSheets && isOnline) {
+    try {
+      const resp = await fetch(SHEET_URL);
+      items = await resp.json();
+      saveLocal(items);
+      updateSyncUI('synced');
+    } catch(e) {
+      items = loadLocal();
+      updateSyncUI('offline');
+    }
+  } else {
+    items = loadLocal();
+    updateSyncUI(useSheets ? 'offline' : 'local');
+  }
+
+  if (!items || items.length === 0) {
+    items = JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+    saveLocal(items);
+  }
+
+  render();
+  showLastUpdate();
+}
+
+// ============================================================
+// VIEW SWITCHING
+// ============================================================
+function setView(view) {
+  currentView = view;
+  document.getElementById('btnInventory').classList.toggle('active', view === 'inventory');
+  document.getElementById('btnBuy').classList.toggle('active', view === 'buy');
+  render();
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function render() {
+  const container = document.getElementById('listContainer');
+  container.innerHTML = '';
+
+  const displayItems = currentView === 'buy'
+    ? items.filter(i => i.have < i.need)
+    : items;
+
+  if (displayItems.length === 0 && currentView === 'buy') {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">&#10024;</div>
+        <p>Todo surtido, no falta nada</p>
+      </div>
+    `;
+    updateSummary();
+    return;
+  }
+
+  const categories = [...new Set(displayItems.map(i => i.cat))];
+
+  categories.forEach(cat => {
+    const catItems = displayItems.filter(i => i.cat === cat);
+    const section = document.createElement('div');
+    section.className = 'category-section';
+
+    const needCount = catItems.filter(i => i.have < i.need).length;
+
+    section.innerHTML = `
+      <div class="category-header">
+        <span>${cat}</span>
+        ${needCount > 0 ? `<span class="category-count" style="color:var(--warm)">${needCount} por comprar</span>` : '<span class="category-count" style="color:var(--accent)">Completo</span>'}
+      </div>
+      <div class="card" style="padding: 4px 14px;">
+        ${catItems.map(item => {
+          const globalIdx = items.indexOf(item);
+          const status = getStatus(item);
+          const deficit = Math.max(0, item.need - item.have);
+          return `
+            <div class="inv-item">
+              <div class="inv-status ${status}"></div>
+              <div class="inv-info">
+                <div class="inv-name">${item.name}</div>
+                <div class="inv-need">Necesitas ${item.need} ${item.unit}/semana</div>
+              </div>
+              ${currentView === 'buy' && deficit > 0
+                ? `<div class="buy-badge">Faltan ${formatNum(deficit)}</div>`
+                : ''
+              }
+              <div class="inv-stepper">
+                <button class="step-btn" onclick="adjust(${globalIdx}, -1)" aria-label="Quitar 1">-</button>
+                <div class="step-val ${item.have === 0 ? 'zero' : ''}">${formatNum(item.have)}</div>
+                <button class="step-btn" onclick="adjust(${globalIdx}, 1)" aria-label="Agregar 1">+</button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+    container.appendChild(section);
+  });
+
+  updateSummary();
+}
+
+// ============================================================
+// ADJUST QUANTITY
+// ============================================================
+function adjust(idx, delta) {
+  const item = items[idx];
+  item.have = Math.max(0, item.have + delta);
+
+  // Re-render
+  render();
+
+  // Debounced save
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    saveLocal(items);
+    if (useSheets && isOnline) syncAllToSheets();
+  }, 400);
+}
+
+// ============================================================
+// STATUS
+// ============================================================
+function getStatus(item) {
+  if (item.have === 0) return 'out';
+  if (item.have < item.need) return 'low';
+  return 'ok';
+}
+
+// ============================================================
+// SUMMARY
+// ============================================================
+function updateSummary() {
+  const ok = items.filter(i => i.have >= i.need).length;
+  const low = items.filter(i => i.have > 0 && i.have < i.need).length;
+  const out = items.filter(i => i.have === 0).length;
+
+  document.getElementById('countOk').textContent = ok;
+  document.getElementById('countLow').textContent = low;
+  document.getElementById('countOut').textContent = out;
+}
+
+// ============================================================
+// FORMAT
+// ============================================================
+function formatNum(n) {
+  return Number.isInteger(n) ? n : n.toFixed(1).replace(/\.0$/, '');
+}
+
+// ============================================================
+// LOCAL STORAGE
+// ============================================================
+function saveLocal(data) {
+  try {
+    localStorage.setItem('despensa_items', JSON.stringify(data));
+    localStorage.setItem('despensa_updated', new Date().toISOString());
+    showLastUpdate();
+  } catch(e) {}
+}
+
+function loadLocal() {
+  try {
+    const stored = localStorage.getItem('despensa_items');
+    return stored ? JSON.parse(stored) : null;
+  } catch(e) { return null; }
+}
+
+function showLastUpdate() {
+  const ts = localStorage.getItem('despensa_updated');
+  if (ts) {
+    const d = new Date(ts);
+    const now = new Date();
+    const diffMin = Math.round((now - d) / 60000);
+    let text;
+    if (diffMin < 1) text = 'Justo ahora';
+    else if (diffMin < 60) text = `Hace ${diffMin} min`;
+    else if (diffMin < 1440) text = `Hace ${Math.round(diffMin/60)} hrs`;
+    else text = d.toLocaleDateString('es-MX', {day:'numeric', month:'short'});
+    document.getElementById('lastUpdate').textContent = text;
+  }
+}
+
+// ============================================================
+// GOOGLE SHEETS SYNC
+// ============================================================
+async function syncAllToSheets() {
+  if (!SHEET_URL) return;
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'updateAll', items: items.map(i => ({cat: i.cat, name: i.name, need: i.need, have: i.have, unit: i.unit})) }),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+    updateSyncUI('synced');
+  } catch(e) {
+    updateSyncUI('offline');
+  }
+}
+
+// ============================================================
+// SYNC UI
+// ============================================================
+function updateSyncUI(state) {
+  const dot = document.getElementById('syncDot');
+  const status = document.getElementById('syncStatus');
+  const banner = document.getElementById('offlineBanner');
+
+  if (state === 'synced') {
+    dot.className = 'sync-dot';
+    status.textContent = 'Sincronizado';
+    banner.classList.remove('show');
+  } else if (state === 'offline') {
+    dot.className = 'sync-dot offline';
+    status.textContent = 'Sin conexion';
+    banner.classList.add('show');
+  } else {
+    dot.className = 'sync-dot';
+    dot.style.background = 'var(--earth)';
+    status.textContent = 'Modo local';
+    banner.classList.remove('show');
+  }
+}
+</script>
+
+<!--
+============================================================
+SETUP GOOGLE SHEETS (opcional, para sincronizar entre dispositivos)
+============================================================
+
+1. Ir a Google Sheets: https://sheets.google.com
+2. Crear nueva hoja: "Despensa"
+3. Columnas: A=cat, B=name, C=need, D=have, E=unit
+4. Llenar con los items (o dejar que la app use los defaults)
+
+5. Extensions > Apps Script, pegar:
+
+function doGet(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = sheet.getDataRange().getValues();
+  var items = [];
+  for (var i = 1; i < data.length; i++) {
+    items.push({cat: data[i][0], name: data[i][1], need: data[i][2], have: data[i][3], unit: data[i][4]});
+  }
+  return ContentService.createTextOutput(JSON.stringify(items)).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var params = JSON.parse(e.postData.contents);
+  if (params.action === 'updateAll') {
+    for (var i = 0; i < params.items.length; i++) {
+      sheet.getRange(i + 2, 4).setValue(params.items[i].have);
+    }
+  }
+  return ContentService.createTextOutput(JSON.stringify({success: true})).setMimeType(ContentService.MimeType.JSON);
+}
+
+6. Deploy > New deployment > Web app (Anyone)
+7. Pegar URL en SHEET_URL arriba
+
+Sin Google Sheet, funciona con localStorage (cada dispositivo independiente).
+============================================================
+-->
+
+</body>
+</html>

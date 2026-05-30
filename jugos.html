@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Jugos y Bebidas</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .step-list {
+      list-style: none;
+      counter-reset: step;
+      padding: 0;
+      margin: 10px 0 0;
+    }
+    .step-list li {
+      counter-increment: step;
+      position: relative;
+      padding: 8px 0 8px 36px;
+      font-size: 0.85rem;
+      border-bottom: 1px solid rgba(232,224,216,0.3);
+      line-height: 1.5;
+    }
+    .step-list li:last-child { border-bottom: none; }
+    .step-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .juice-volume {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .juice-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    .ingredient-qty {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .sub-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      padding: 12px 0 6px;
+    }
+    .beverage-item {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(232,224,216,0.3);
+      font-size: 0.85rem;
+    }
+    .beverage-item:last-child { border-bottom: none; }
+    .beverage-name {
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .beverage-detail {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .beverage-time {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--warm);
+    }
+    .logistics-item {
+      display: flex;
+      gap: 8px;
+      padding: 8px 0;
+      font-size: 0.84rem;
+      border-bottom: 1px solid rgba(232,224,216,0.3);
+    }
+    .logistics-item:last-child { border-bottom: none; }
+    .logistics-icon {
+      flex-shrink: 0;
+      width: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .highlight-row {
+      background: var(--warm-light);
+      border-left: 3px solid var(--warm);
+      padding: 7px 10px !important;
+      border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+      margin: 2px 0;
+      font-weight: 600;
+    }
+    .prep-section-title {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      padding: 10px 0 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .prep-section-title .prep-time {
+      font-weight: 400;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="page-header">
+    <h1>Jugos y Bebidas</h1>
+    <div class="subtitle">Recetas paso a paso &middot; L/Mi/V preparar</div>
+  </header>
+
+  <div class="content">
+
+    <!-- ALERTA IMPORTANTE -->
+    <div class="alert alert-warn" style="font-weight:600;">
+      Mostaza y pimienta se agregan AL SERVIR, no al preparar. Si se prepara para 2 dias, agregar solo al momento de tomar.
+    </div>
+
+    <!-- ========== LOGISTICA ========== -->
+    <div class="section-label">Logistica</div>
+    <div class="card">
+      <div class="card-title"><span class="icon">&#128197;</span> Calendario de preparacion</div>
+      <div class="logistics-item">
+        <span class="logistics-icon">&#127860;</span>
+        <div><strong>Lunes, Miercoles, Viernes:</strong> preparar jugos frescos</div>
+      </div>
+      <div class="logistics-item">
+        <span class="logistics-icon">&#10052;&#65039;</span>
+        <div><strong>Refrigerados:</strong> aguantan 24 horas en recipiente hermetico</div>
+      </div>
+      <div class="logistics-item">
+        <span class="logistics-icon">&#128197;</span>
+        <div><strong>Cobertura:</strong> L (fresco), Ma (de ayer), Mi (fresco), Ju (de ayer), Vi (fresco), Sa (de ayer)</div>
+      </div>
+      <div class="logistics-item">
+        <span class="logistics-icon">&#128164;</span>
+        <div><strong>Domingo:</strong> sin jugo</div>
+      </div>
+    </div>
+
+    <!-- ========== JUGO 1 ========== -->
+    <div class="section-label">Recetas</div>
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">&#129388;</span>
+        Jugo 1 &mdash; Verde / Digestivo
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span class="badge badge-green">Se toma con el desayuno</span>
+        <span class="juice-volume">~450 ml</span>
+      </div>
+
+      <div class="sub-label">Ingredientes</div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Pina <span class="ingredient-qty">&mdash; 2 rebanadas (~4cm)</span></span>
+        <span class="ingredient-benefit">Bromelina + dulzor</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Manzana verde <span class="ingredient-qty">&mdash; 1/2</span></span>
+        <span class="ingredient-benefit">Quercetina + dulzor</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Pepino <span class="ingredient-qty">&mdash; 1/2</span></span>
+        <span class="ingredient-benefit">Hidratacion</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Sabila <span class="ingredient-qty">&mdash; 5-7cm pulpa (solo gel transparente)</span></span>
+        <span class="ingredient-benefit">Gastroprotector</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Apio <span class="ingredient-qty">&mdash; 2-3 varas grandes</span></span>
+        <span class="ingredient-benefit">Electrolitos</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Jengibre <span class="ingredient-qty">&mdash; 5cm</span></span>
+        <span class="ingredient-benefit">Antiinflamatorio</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Lechuga <span class="ingredient-qty">&mdash; 1/2 chica</span></span>
+        <span class="ingredient-benefit">Base neutra</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Chayote <span class="ingredient-qty">&mdash; 1</span></span>
+        <span class="ingredient-benefit">Potasio</span>
+      </div>
+      <div class="ingredient-row highlight-row">
+        <span class="ingredient-name">AL SERVIR: Pimienta negra <span class="ingredient-qty">&mdash; 1/4 cdta</span></span>
+        <span class="ingredient-benefit">Aumenta absorcion</span>
+      </div>
+
+      <div class="sub-label">Proceso</div>
+      <ol class="step-list">
+        <li>Lavar todos los ingredientes</li>
+        <li>Cortar en trozos que quepan en el extractor</li>
+        <li>Pasar por extractor en este orden: lechuga, pina, sabila, apio, pepino, manzana, jengibre, chayote</li>
+        <li>Servir en vaso, agregar 1/4 cdta de pimienta negra y revolver</li>
+      </ol>
+      <div class="juice-time">&#9201; Tiempo: ~10 minutos</div>
+    </div>
+
+    <!-- ========== JUGO 3 ========== -->
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">&#129382;</span>
+        Jugo 3 &mdash; Morado / Antiinflamatorio
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+        <span class="badge badge-danger">El mas importante</span>
+        <span class="juice-volume">~550 ml</span>
+      </div>
+      <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:12px;">Se toma con la cena</div>
+
+      <div class="sub-label">Ingredientes</div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Col morada <span class="ingredient-qty">&mdash; 1/4 de col</span></span>
+        <span class="ingredient-benefit">Antioxidante</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Manzana <span class="ingredient-qty">&mdash; 1.5</span></span>
+        <span class="ingredient-benefit">Dulzor + quercetina</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Brocoli <span class="ingredient-qty">&mdash; 1 taza floretes</span></span>
+        <span class="ingredient-benefit">Sulforafano</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Pepino <span class="ingredient-qty">&mdash; 1/2</span></span>
+        <span class="ingredient-benefit">Hidratacion</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Papa blanca <span class="ingredient-qty">&mdash; 1 chica con cascara</span></span>
+        <span class="ingredient-benefit">Potasio</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Calabaza maya <span class="ingredient-qty">&mdash; 1/2 taza</span></span>
+        <span class="ingredient-benefit">Betacaroteno</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Chayote <span class="ingredient-qty">&mdash; 1/2</span></span>
+        <span class="ingredient-benefit">Potasio</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Curcuma <span class="ingredient-qty">&mdash; 3 raices de ~4cm</span></span>
+        <span class="ingredient-benefit">Antiinflamatorio principal</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Limon <span class="ingredient-qty">&mdash; 1</span></span>
+        <span class="ingredient-benefit">Vitamina C</span>
+      </div>
+      <div class="ingredient-row">
+        <span class="ingredient-name">Pina <span class="ingredient-qty">&mdash; 1 rebanada</span></span>
+        <span class="ingredient-benefit">Sabor</span>
+      </div>
+      <div class="ingredient-row highlight-row">
+        <span class="ingredient-name">AL SERVIR: Mostaza molida <span class="ingredient-qty">&mdash; 1/2 cdta</span></span>
+        <span class="ingredient-benefit">Activa sulforafano</span>
+      </div>
+      <div class="ingredient-row highlight-row">
+        <span class="ingredient-name">AL SERVIR: Pimienta negra <span class="ingredient-qty">&mdash; 1/4 cdta</span></span>
+        <span class="ingredient-benefit">Absorcion curcumina</span>
+      </div>
+
+      <div class="alert alert-warn" style="margin-top:12px;">
+        La curcuma mancha mucho. Usar guantes o cuidar manos y superficies al cortarla.
+      </div>
+
+      <div class="sub-label">Proceso</div>
+      <ol class="step-list">
+        <li>Lavar todo bien (especial cuidado con la curcuma, mancha)</li>
+        <li>Cortar en trozos para el extractor</li>
+        <li>Pasar por extractor en este orden: col morada, manzana, brocoli, pepino, papa, calabaza, chayote, curcuma, limon, pina</li>
+        <li>Al servir: agregar 1/2 cdta mostaza molida + 1/4 cdta pimienta negra, revolver bien</li>
+        <li>Tomar relativamente rapido (no dejar reposar mucho)</li>
+      </ol>
+      <div class="juice-time">&#9201; Tiempo: ~12 minutos</div>
+    </div>
+
+    <!-- ========== BEBIDAS ========== -->
+    <div class="section-label">Bebidas diarias</div>
+    <div class="card">
+      <div class="card-title"><span class="icon">&#127861;</span> Bebidas del protocolo</div>
+
+      <div class="beverage-item">
+        <div class="beverage-time">Al despertar</div>
+        <div class="beverage-name">Agua caliente + Sabila</div>
+        <div class="beverage-detail">
+          1-2 vasos de agua caliente con gel de sabila (solo el gel transparente, sin la cascara verde). Tomar antes de cualquier alimento.
+        </div>
+      </div>
+
+      <div class="beverage-item">
+        <div class="beverage-time">Post-entrenamiento (solo dias de entreno)</div>
+        <div class="beverage-name">Suero casero</div>
+        <div class="beverage-detail">
+          1 cda sal de mar + 1/2 cda vinagre de manzana + miel al gusto + agua. Mezclar bien. Solo despues de entrenar.
+        </div>
+      </div>
+
+      <div class="beverage-item">
+        <div class="beverage-time">Diario &mdash; 4:30 PM</div>
+        <div class="beverage-name">Bebida de cayena</div>
+        <div class="beverage-detail">
+          Miel + pimienta de cayena al gusto + 2 cdas vinagre de manzana + 500ml agua. Mezclar y tomar.
+        </div>
+      </div>
+
+      <div class="beverage-item">
+        <div class="beverage-time">Diario &mdash; 10:00 PM</div>
+        <div class="beverage-name">Papaya fermentada</div>
+        <div class="beverage-detail">
+          Papaya licuada con agua + 2 cdas miel. Dejar fermentar (preparar con anticipacion). Tomar 1/2 taza en la noche.
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PREP DOMINICAL ========== -->
+    <div class="section-label">Prep dominical</div>
+    <div class="card">
+      <div class="card-title"><span class="icon">&#128374;</span> Prep del domingo</div>
+      <div class="alert alert-info">Tiempo total: ~1.5 horas. Preparar todo el domingo para tener la semana lista.</div>
+
+      <div class="prep-section-title">Proteinas <span class="prep-time">30 min</span></div>
+      <ul class="checklist">
+        <li>Hervir 750g pechuga de pollo, desmenuzar y dividir en 3 tuppers (L/Ma/Mi)</li>
+        <li>Hervir 6 huevos duros para snacks de la semana</li>
+      </ul>
+
+      <div class="prep-section-title">Caldo de hueso <span class="prep-time">15 min activos + 2-4 hrs pasivas</span></div>
+      <ul class="checklist">
+        <li>Poner en olla: huesos de pollo + cebolla + ajo + apio + zanahoria + sal</li>
+        <li>Fuego bajo por 2-4 horas. Colar. Dividir en 5-7 porciones para cenas</li>
+      </ul>
+
+      <div class="prep-section-title">Ensalada "Jugo 2" <span class="prep-time">10 min</span></div>
+      <ul class="checklist">
+        <li>Picar jitomate, apio, perejil y cebolla para 3 dias (sin aliño). Repetir el miercoles</li>
+      </ul>
+
+      <div class="prep-section-title">Granos <span class="prep-time">15 min</span></div>
+      <ul class="checklist">
+        <li>Cocinar arroz o quinoa para 3 dias (3 tazas secas)</li>
+      </ul>
+
+      <div class="prep-section-title">Ingredientes de jugos <span class="prep-time">15 min</span></div>
+      <ul class="checklist">
+        <li>Lavar todos los ingredientes de jugos</li>
+        <li>Separar por porcion diaria en bolsas individuales</li>
+        <li>Curcuma, jengibre y sabila: NO pre-cortar (se oxidan). Dejar enteros</li>
+      </ul>
+    </div>
+
+  </div><!-- .content -->
+
+  <!-- ========== BOTTOM NAV ========== -->
+  <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+      <span class="nav-icon">&#9776;</span>
+      <span>Inicio</span>
+    </a>
+    <a href="compras.html" class="nav-item">
+      <span class="nav-icon">&#128722;</span>
+      <span>Compras</span>
+    </a>
+    <a href="menus.html" class="nav-item">
+      <span class="nav-icon">&#127869;</span>
+      <span>Menus</span>
+    </a>
+    <a href="jugos.html" class="nav-item active">
+      <span class="nav-icon">&#129389;</span>
+      <span>Jugos</span>
+    </a>
+  </nav>
+
+  <!-- Expandable card toggle -->
+  <script>
+    document.querySelectorAll('.expandable').forEach(card => {
+      card.querySelector('.expand-header').addEventListener('click', () => {
+        card.classList.toggle('open');
+      });
+    });
+
+    // Interactive checklist
+    document.querySelectorAll('.check-item').forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('checked');
+      });
+    });
+  </script>
+
+</body>
+</html>
