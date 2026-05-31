@@ -184,6 +184,48 @@
     margin-bottom: 14px;
   }
   .offline-banner.show { display: block; }
+
+  /* Hidden nav */
+  .hidden-nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--text);
+    border-radius: 16px;
+    padding: 10px 6px;
+    display: flex;
+    gap: 4px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    z-index: 200;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .hidden-nav.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .hidden-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-decoration: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.6rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 10px;
+    transition: color 0.2s, background 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hidden-nav a:active {
+    background: rgba(255,255,255,0.1);
+    color: white;
+  }
+  .hidden-nav .hn-icon { font-size: 1.2rem; line-height: 1; }
 </style>
 </head>
 <body>
@@ -235,7 +277,12 @@
 
 </div>
 
-<!-- No nav — pagina compartida -->
+<!-- Hidden nav — triple tap en titulo -->
+<div class="hidden-nav" id="hiddenNav">
+  <a href="dashboard.html"><span class="hn-icon">&#x1F331;</span><span>Hoy</span></a>
+  <a href="menus.html"><span class="hn-icon">&#x1F372;</span><span>Menus</span></a>
+  <a href="jugos.html"><span class="hn-icon">&#x1F966;</span><span>Jugos</span></a>
+</div>
 
 <script>
 // ============================================================
@@ -351,6 +398,27 @@ let saveTimer = null;
 // ============================================================
 // INIT
 // ============================================================
+// ---- Hidden nav: triple-tap on title ----
+(function() {
+  var tapCount = 0;
+  var tapTimer = null;
+  var hideTimer = null;
+  var title = document.querySelector('.page-header h1');
+  title.addEventListener('click', function(e) {
+    e.preventDefault();
+    tapCount++;
+    clearTimeout(tapTimer);
+    tapTimer = setTimeout(function() { tapCount = 0; }, 500);
+    if (tapCount >= 3) {
+      tapCount = 0;
+      var nav = document.getElementById('hiddenNav');
+      nav.classList.add('show');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(function() { nav.classList.remove('show'); }, 4000);
+    }
+  });
+})();
+
 window.addEventListener('load', init);
 window.addEventListener('online', () => { isOnline = true; updateSyncUI(); });
 window.addEventListener('offline', () => { isOnline = false; updateSyncUI(); });

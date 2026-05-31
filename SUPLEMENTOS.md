@@ -6,7 +6,7 @@
 | Que | Dosis |
 |---|---|
 | DGL masticable | 400mg (masticar 15 min antes de comer) |
-| Psyllium | 5g + 2 vasos agua |
+| Psyllium | 5g + 2 vasos agua (en dias AM, mover al post-entreno) |
 
 ### Con desayuno (~8:00-9:15 segun entreno):
 | Suplemento | Dosis | Tier |
@@ -23,6 +23,11 @@
 | L. rhamnosus GG | 10B CFU | T3 |
 | GOS prebiotico | 3-5g | T3 |
 
+### Antes de comida (1:45 PM):
+| Que | Dosis |
+|---|---|
+| DGL masticable | 400mg (masticar 15 min antes de comer) |
+
 ### Con comida (2:00 PM):
 | Suplemento | Dosis | Tier |
 |---|---|---|
@@ -38,6 +43,7 @@
 ### Con cena (8:00 PM):
 | Suplemento | Dosis | Tier |
 |---|---|---|
+| Zinc carnosine | 75mg | T2 |
 | L-glutamina | 5g polvo (en caldo o agua) | T2 |
 | Omega-3 | 1g | T1 |
 
@@ -65,8 +71,8 @@
 
 | Suplemento | Dosis | Evidencia |
 |---|---|---|
-| DGL masticable | 400mg antes desayuno | Equivalencia con cimetidina para ulceras (Morgan 1982, Gut) |
-| Zinc carnosine | 75mg con comida | Citoprotector gastrico. Aprobado en Japon (Mahmood 2007, Gut) |
+| DGL masticable | 400mg 2x/dia (antes desayuno + antes comida) | Equivalencia con cimetidina para ulceras (Morgan 1982, Gut) |
+| Zinc carnosine | 75mg 2x/dia (comida + cena) | Citoprotector gastrico. Aprobado en Japon (Mahmood 2007, Gut). Dosis estudiada: 150mg/dia |
 | L-glutamina | 5g noche | Combustible de celulas gastricas. Sinergia con zinc carnosine |
 | Extracto de alcachofa | 500mg con comida | Estimula bilis → digestion de grasas → heces (Bundy 2004) |
 

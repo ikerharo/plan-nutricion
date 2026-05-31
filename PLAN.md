@@ -22,6 +22,7 @@ Sostenible en rutina, sin dependencia ni bajones al viajar. El plan es la linea 
 
 ## Estructura del proyecto
 - PLAN.md — este archivo
+- TRANSICION.md — plan de 7 dias para pasar de protocolo Ale a plan completo
 - HORARIOS.md — rutina diaria entre semana
 - MENUS.md — desayunos, comidas, cenas, snacks
 - JUGOS.md — recetas de jugos reformulados
@@ -31,6 +32,8 @@ Sostenible en rutina, sin dependencia ni bajones al viajar. El plan es la linea 
 - ELIMINACION.md — dieta de eliminacion y plan de reintroduccion
 
 ## Fases
-1. **Ahora - Jun 16:** Eliminacion (sin lacteos, sin gluten, sin ultraprocesados)
-2. **Jun 16+:** Reintroduccion gradual (lacteos primero, luego gluten)
-3. **Largo plazo:** 80/20 — limpio en rutina, flexible en social/viajes
+1. **May 26-30:** Protocolo Ale — jugos, detox, tinturas (completado)
+2. **May 31 - Jun 6:** Transicion — rampa gradual de jugos a solidos (ver TRANSICION.md)
+3. **Jun 7 - Jun 16:** Eliminacion a velocidad crucero (sin lacteos, sin gluten, sin ultraprocesados)
+4. **Jun 16+:** Reintroduccion gradual (lacteos primero, luego gluten)
+5. **Largo plazo:** 80/20 — limpio en rutina, flexible en social/viajes

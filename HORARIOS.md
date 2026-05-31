@@ -12,7 +12,6 @@ Fin de semana excluido. Flexible.
        Luz solar 10-15 min (balcon/ventana)
 
 7:15   DGL masticable 400mg (masticar, 15 min antes de comer)
-       Psyllium 5g + vaso de agua + otro vaso detras
 
 7:30   ENTRENO (gym/Hyrox/correr/yoga)
   -
@@ -20,7 +19,8 @@ Fin de semana excluido. Flexible.
        Vapor/sauna 20-30 min (dias de fuerza) + sal Epsom + ducha
        Suero post-entreno (sal de mar + vinagre + miel + agua)
 
-9:15   DESAYUNO + JUGO 1 + suplementos AM
+9:15   Psyllium 5g + vaso de agua + otro vaso detras
+       DESAYUNO + JUGO 1 + suplementos AM
        Cafe #1 (90+ min despues de despertar)
 
 9:30   Trabajo
@@ -31,6 +31,8 @@ Fin de semana excluido. Flexible.
        (2+ hrs despues de tinturas si aplican)
 
 12:00  Cafe #3
+
+1:45   DGL masticable 400mg (masticar, 15 min antes de comer)
 
 2:00   COMIDA (plato fuerte) + ensalada "Jugo 2" + suplementos comida
        Vinagre de manzana con agua (con la comida)
@@ -64,14 +66,15 @@ Fin de semana excluido. Flexible.
 
 8:15   Tinturas de Ale (si aplican)
 
-8:30   Cafe #1 (90+ min despues de despertar)
-
-9:00   Trabajo
+9:00   Cafe #1 (90+ min despues de despertar)
+       Trabajo
 
 10:15  Probiotico LGG + GOS + snack
        Cafe #2
 
 12:00  Cafe #3
+
+1:45   DGL masticable 400mg (masticar, 15 min antes de comer)
 
 2:00   COMIDA (plato fuerte) + ensalada "Jugo 2" + suplementos comida
 

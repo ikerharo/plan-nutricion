@@ -11,85 +11,99 @@
     .greeting { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2px; }
     .now-indicator { font-size: 0.78rem; color: var(--accent-dark); font-weight: 600; margin-top: 4px; }
 
-    /* Pill badges in timeline */
-    .pill-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-top: 6px;
-    }
+    .pill-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
     .pill {
-      display: inline-flex;
-      align-items: baseline;
-      gap: 3px;
-      padding: 3px 9px;
-      border-radius: 14px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      background: var(--earth-light);
-      color: var(--earth);
-      white-space: nowrap;
+      display: inline-flex; align-items: baseline; gap: 3px;
+      padding: 3px 9px; border-radius: 14px; font-size: 0.7rem; font-weight: 600;
+      background: var(--earth-light); color: var(--earth); white-space: nowrap;
     }
-    .pill small {
-      font-weight: 400;
-      font-size: 0.62rem;
-      opacity: 0.75;
-    }
-    .pill.accent {
-      background: var(--accent-light);
-      color: var(--accent-dark);
-    }
-    .pill.sleep {
-      background: #EDE8F2;
-      color: #7B6B8F;
-    }
+    .pill small { font-weight: 400; font-size: 0.62rem; opacity: 0.75; }
+    .pill.accent { background: var(--accent-light); color: var(--accent-dark); }
+    .pill.sleep { background: #EDE8F2; color: #7B6B8F; }
 
-    /* Elimination lists */
     .elim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .elim-col h4 {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 8px;
-      padding: 4px 8px;
-      border-radius: var(--radius-xs);
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.8px; margin-bottom: 8px; padding: 4px 8px; border-radius: var(--radius-xs);
     }
     .elim-col h4.red { background: var(--danger-light); color: var(--danger); }
     .elim-col h4.green { background: var(--success-light); color: var(--success); }
-    .elim-col ul {
-      list-style: none;
-      font-size: 0.78rem;
-      line-height: 1.9;
-      color: var(--text);
-    }
+    .elim-col ul { list-style: none; font-size: 0.78rem; line-height: 1.9; color: var(--text); }
 
-    /* Today badge in week grid */
-    .wg-today {
-      background: var(--accent-light) !important;
-      font-weight: 700;
-    }
-
-    /* Schedule visibility */
+    .wg-today { background: var(--accent-light) !important; font-weight: 700; }
     .schedule { display: none; }
     .schedule.visible { display: block; }
-
-    /* Vapor dot */
-    .vapor-dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      vertical-align: middle;
-    }
+    .vapor-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: middle; }
     .vapor-dot.yes { background: var(--accent); }
     .vapor-dot.opt { background: var(--earth); }
     .vapor-dot.no { background: var(--card-border); }
+
+    /* ========== TRANSICION ========== */
+    .trans-section { display: none; }
+    .trans-section.active { display: block; }
+
+    .trans-banner {
+      background: linear-gradient(135deg, var(--warm-light), var(--earth-light));
+      border: 1.5px solid var(--warm);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+    .trans-banner-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.1rem; margin-bottom: 4px;
+    }
+    .trans-banner-sub { font-size: 0.78rem; color: var(--text-muted); }
+
+    .day-selector {
+      display: flex; gap: 4px; overflow-x: auto; padding: 4px 0 12px;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .day-selector::-webkit-scrollbar { display: none; }
+    .day-btn {
+      flex-shrink: 0; padding: 8px 10px; border: 1.5px solid var(--card-border);
+      background: var(--card); border-radius: var(--radius-sm);
+      font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+      color: var(--text-muted); cursor: pointer; text-align: center; min-width: 54px;
+      transition: all 0.2s; -webkit-tap-highlight-color: transparent;
+    }
+    .day-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+    .day-btn.past { opacity: 0.5; }
+    .day-btn .day-num { font-size: 1rem; display: block; line-height: 1.2; }
+    .day-btn .day-name { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .phase-label {
+      display: inline-block; font-size: 0.62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px; padding: 3px 8px;
+      border-radius: 4px; margin-bottom: 6px;
+    }
+    .phase-1 { background: var(--warm-light); color: var(--warm); }
+    .phase-2 { background: var(--earth-light); color: var(--earth); }
+    .phase-3 { background: var(--accent-light); color: var(--accent-dark); }
+
+    .targets-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 10px 0; }
+    .target-box { text-align: center; padding: 10px 6px; border-radius: var(--radius-sm); background: #F8F5F1; }
+    .target-num { font-size: 1.1rem; font-weight: 700; }
+    .target-label { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .change-item {
+      padding: 6px 0; font-size: 0.82rem; display: flex; align-items: baseline; gap: 6px;
+    }
+    .change-item.quitar::before { content: '\2212'; color: var(--danger); font-weight: 700; }
+    .change-item.agregar::before { content: '+'; color: var(--accent); font-weight: 700; }
+    .change-item.mantener::before { content: '='; color: var(--text-muted); font-weight: 700; }
+
+    .progress-bar { display: flex; gap: 3px; margin: 10px 0 4px; }
+    .progress-seg { flex: 1; height: 5px; border-radius: 3px; background: #F0EDEA; }
+    .progress-seg.done { background: var(--accent); }
+    .progress-seg.current { background: var(--warm); }
+
+    .trans-day { display: none; }
+    .trans-day.active { display: block; }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
   <header class="page-header">
     <p class="greeting" id="greeting">Buenos dias, Iker</p>
     <h1>Mi Dia</h1>
@@ -99,12 +113,269 @@
 
   <main class="content">
 
-    <!-- ==================== SCHEDULE ==================== -->
+    <!-- ==================== TRANSICION (May 31 - Jun 6) ==================== -->
+    <div class="trans-section" id="transSection">
+
+      <div class="trans-banner">
+        <div class="trans-banner-title">Transicion activa</div>
+        <div class="trans-banner-sub">Protocolo Ale → Plan completo &middot; <span id="transProgress">Dia 1 de 7</span></div>
+        <div class="progress-bar">
+          <div class="progress-seg" id="tseg-0"></div>
+          <div class="progress-seg" id="tseg-1"></div>
+          <div class="progress-seg" id="tseg-2"></div>
+          <div class="progress-seg" id="tseg-3"></div>
+          <div class="progress-seg" id="tseg-4"></div>
+          <div class="progress-seg" id="tseg-5"></div>
+          <div class="progress-seg" id="tseg-6"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:0.62rem; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">
+          <span>Fase 1</span><span>Fase 2</span><span>Fase 3</span>
+        </div>
+      </div>
+
+      <div class="day-selector" id="daySelector">
+        <button class="day-btn" data-tday="0" onclick="showTransDay(0)"><span class="day-num">31</span><span class="day-name">Sab</span></button>
+        <button class="day-btn" data-tday="1" onclick="showTransDay(1)"><span class="day-num">1</span><span class="day-name">Dom</span></button>
+        <button class="day-btn" data-tday="2" onclick="showTransDay(2)"><span class="day-num">2</span><span class="day-name">Lun</span></button>
+        <button class="day-btn" data-tday="3" onclick="showTransDay(3)"><span class="day-num">3</span><span class="day-name">Mar</span></button>
+        <button class="day-btn" data-tday="4" onclick="showTransDay(4)"><span class="day-num">4</span><span class="day-name">Mie</span></button>
+        <button class="day-btn" data-tday="5" onclick="showTransDay(5)"><span class="day-num">5</span><span class="day-name">Jue</span></button>
+        <button class="day-btn" data-tday="6" onclick="showTransDay(6)"><span class="day-num">6</span><span class="day-name">Vie</span></button>
+      </div>
+
+      <!-- DIA 1: SAB 31 -->
+      <div class="trans-day" id="tday-0">
+        <span class="phase-label phase-1">Fase 1 — Reintroduccion</span>
+        <div class="targets-grid">
+          <div class="target-box"><div class="target-num">~1,200</div><div class="target-label">kcal</div></div>
+          <div class="target-box"><div class="target-num">~80g</div><div class="target-label">proteina</div></div>
+          <div class="target-box"><div class="target-num">0</div><div class="target-label">entreno</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Cambios hoy</div>
+          <div class="change-item quitar">Enemas de cafe</div>
+          <div class="change-item quitar">Shot matutino (limon+cebolla+ajo)</div>
+          <div class="change-item quitar">Niacina + Chlorella</div>
+          <div class="change-item agregar">Agua caliente + sabila al despertar</div>
+          <div class="change-item agregar">1 comida solida (sopa/crema)</div>
+          <div class="change-item mantener">Tinturas de Ale 2x (AM + PM)</div>
+          <div class="change-item mantener">Jugo 1 + Jugo 3 con whey</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Horario</div>
+          <div class="timeline">
+            <div class="time-block sleep"><span class="time-label">7:30</span><div class="time-title">Despertar</div><div class="time-detail">Agua caliente + sabila (1-2 vasos)<br>Luz solar 10-15 min</div></div>
+            <div class="time-block supplement"><span class="time-label">8:00</span><div class="time-title">Tinturas de Ale + Jugo 1</div><div class="time-detail">Jugo 1 + 1 scoop whey</div><div class="time-detail pill-list"><span class="pill">Omega-3 2g</span><span class="pill">Complejo B</span><span class="pill">Vit C 500mg</span></div></div>
+            <div class="time-block meal"><span class="time-label">10:30</span><div class="time-title">Probiotico + snack</div><div class="time-detail">LGG (2+ hrs post-tinturas)<br>Fruta: berries, platano, manzana</div></div>
+            <div class="time-block meal"><span class="time-label">13:00</span><div class="time-title">Comida solida</div><div class="time-detail">Sopa de pollo con verduras<br>O crema de verdura con pollo<br>Porcion moderada — no llenar</div></div>
+            <div class="time-block supplement"><span class="time-label">16:30</span><div class="time-title">Psyllium + snack</div><div class="time-detail">Psyllium 5g + agua<br>Fruta o aguacate con limon</div></div>
+            <div class="time-block supplement"><span class="time-label">19:00</span><div class="time-title">Tinturas de Ale</div><div class="time-detail">2da toma del dia</div></div>
+            <div class="time-block meal"><span class="time-label">20:00</span><div class="time-title">Jugo 3 + whey</div><div class="time-detail">Jugo 3 + 1 scoop whey + mostaza + pimienta</div></div>
+            <div class="time-block"><span class="time-label">21:00</span><div class="time-title">Papaya fermentada</div></div>
+            <div class="time-block sleep"><span class="time-label">21:30</span><div class="time-title">SNC + magnesio</div><div class="time-detail pill-list"><span class="pill sleep">Capsulas SNC x2</span><span class="pill sleep">Magnesio 400mg</span></div></div>
+            <div class="time-block sleep"><span class="time-label">22:30</span><div class="time-title">Dormir</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Actividad fisica</div>
+          <div class="alert alert-info">Caminata 30-40 min o yoga suave. NO gym.</div>
+        </div>
+      </div>
+
+      <!-- DIA 2: DOM 1 -->
+      <div class="trans-day" id="tday-1">
+        <span class="phase-label phase-1">Fase 1 — Reintroduccion</span>
+        <div class="targets-grid">
+          <div class="target-box"><div class="target-num">~1,400</div><div class="target-label">kcal</div></div>
+          <div class="target-box"><div class="target-num">~80g</div><div class="target-label">proteina</div></div>
+          <div class="target-box"><div class="target-num">0</div><div class="target-label">entreno</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Cambios hoy</div>
+          <div class="change-item agregar">Ensalada "Jugo 2" con la comida</div>
+          <div class="change-item agregar">Porcion un poco mas grande que ayer</div>
+          <div class="change-item mantener">Todo lo demas igual</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Horario</div>
+          <div class="timeline">
+            <div class="time-block sleep"><span class="time-label">7:30</span><div class="time-title">Despertar</div><div class="time-detail">Agua caliente + sabila + luz solar</div></div>
+            <div class="time-block supplement"><span class="time-label">8:00</span><div class="time-title">Tinturas + Jugo 1 + whey</div><div class="time-detail pill-list"><span class="pill">Omega-3 2g</span><span class="pill">Complejo B</span><span class="pill">Vit C 500mg</span></div></div>
+            <div class="time-block meal"><span class="time-label">10:30</span><div class="time-title">LGG + fruta</div></div>
+            <div class="time-block meal"><span class="time-label">13:00</span><div class="time-title">Comida + ensalada "Jugo 2"</div><div class="time-detail">Pescado al vapor + arroz + verduras<br>Ensalada: jitomate, apio, perejil, cebolla morada, limon, aceite oliva</div></div>
+            <div class="time-block supplement"><span class="time-label">16:30</span><div class="time-title">Psyllium 5g + snack</div></div>
+            <div class="time-block supplement"><span class="time-label">19:00</span><div class="time-title">Tinturas de Ale</div></div>
+            <div class="time-block meal"><span class="time-label">20:00</span><div class="time-title">Jugo 3 + whey + mostaza + pimienta</div></div>
+            <div class="time-block"><span class="time-label">21:00</span><div class="time-title">Papaya fermentada</div></div>
+            <div class="time-block sleep"><span class="time-label">21:30</span><div class="time-title">SNC + magnesio → dormir 22:30</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Prep para manana</div>
+          <div class="alert alert-warn">Hacer sopa de pollo grande (rinde 4 dias).<br>Preparar ingredientes de jugos para la muchacha.<br>Picar ensalada "Jugo 2" para 3 dias.</div>
+        </div>
+      </div>
+
+      <!-- DIA 3: LUN 2 -->
+      <div class="trans-day" id="tday-2">
+        <span class="phase-label phase-2">Fase 2 — Expansion</span>
+        <div class="targets-grid">
+          <div class="target-box"><div class="target-num">~1,800</div><div class="target-label">kcal</div></div>
+          <div class="target-box"><div class="target-num">~120g</div><div class="target-label">proteina</div></div>
+          <div class="target-box"><div class="target-num">Ligero</div><div class="target-label">entreno</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Cambios hoy</div>
+          <div class="change-item agregar">Desayuno solido (huevos + aguacate)</div>
+          <div class="change-item agregar">Cena solida (sopa/crema + proteina)</div>
+          <div class="change-item agregar">DGL 400mg 2x/dia</div>
+          <div class="change-item agregar">Zinc carnosine 75mg 2x/dia</div>
+          <div class="change-item agregar">Creatina 5g + Vit D 4000 IU</div>
+          <div class="change-item agregar">Cafe: 2 espressos</div>
+          <div class="change-item agregar">Muchacha hace jugos en casa</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Horario</div>
+          <div class="timeline">
+            <div class="time-block sleep"><span class="time-label">7:00</span><div class="time-title">Despertar</div><div class="time-detail">Agua caliente + sabila + luz solar</div></div>
+            <div class="time-block supplement"><span class="time-label">7:15</span><div class="time-title">DGL 400mg</div><div class="time-detail">Masticar, 15 min antes de comer</div></div>
+            <div class="time-block supplement"><span class="time-label">7:30</span><div class="time-title">Tinturas de Ale</div></div>
+            <div class="time-block meal"><span class="time-label">8:00</span><div class="time-title">Desayuno + Jugo 1</div><div class="time-detail">3 huevos con espinaca + 1/2 aguacate<br>Jugo 1 + 1 scoop whey</div><div class="time-detail pill-list"><span class="pill">Omega-3 2g</span><span class="pill">Vit D 4000 IU</span><span class="pill">Creatina 5g</span><span class="pill">Complejo B</span><span class="pill">Vit C 500mg</span></div></div>
+            <div class="time-block"><span class="time-label">9:00</span><div class="time-title">Cafe #1</div><div class="time-detail">90+ min post-despertar</div></div>
+            <div class="time-block meal"><span class="time-label">10:30</span><div class="time-title">LGG + GOS + snack</div><div class="time-detail">Berries o fruta + nueces</div></div>
+            <div class="time-block"><span class="time-label">12:00</span><div class="time-title">Cafe #2</div></div>
+            <div class="time-block supplement"><span class="time-label">13:45</span><div class="time-title">DGL 400mg</div></div>
+            <div class="time-block meal"><span class="time-label">14:00</span><div class="time-title">Comida + ensalada "Jugo 2"</div><div class="time-detail">Proteina 200g + arroz o papa</div><div class="time-detail pill-list"><span class="pill">Zinc carnosine 75mg</span><span class="pill">Alcachofa 500mg</span></div></div>
+            <div class="time-block supplement"><span class="time-label">16:30</span><div class="time-title">Psyllium 5g + Vit C 500mg</div></div>
+            <div class="time-block supplement"><span class="time-label">19:00</span><div class="time-title">Tinturas de Ale</div></div>
+            <div class="time-block meal"><span class="time-label">20:00</span><div class="time-title">Cena ligera + Jugo 3</div><div class="time-detail">Sopa de pollo o crema de verdura<br>Jugo 3 + mostaza + pimienta</div><div class="time-detail pill-list"><span class="pill">L-glutamina 5g</span><span class="pill">Omega-3 1g</span><span class="pill">Zinc carnosine 75mg</span></div></div>
+            <div class="time-block sleep"><span class="time-label">21:30</span><div class="time-title">Papaya + SNC + magnesio</div><div class="time-detail">→ dormir 22:30</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Entreno</div>
+          <div class="alert alert-info">Fuerza upper LIGERA: 50-60% de tu peso normal, menos volumen.<br>Vapor + sal Epsom post-entreno.</div>
+        </div>
+      </div>
+
+      <!-- DIA 4: MAR 3 -->
+      <div class="trans-day" id="tday-3">
+        <span class="phase-label phase-2">Fase 2 — Expansion</span>
+        <div class="targets-grid">
+          <div class="target-box"><div class="target-num">~2,000</div><div class="target-label">kcal</div></div>
+          <div class="target-box"><div class="target-num">~120g</div><div class="target-label">proteina</div></div>
+          <div class="target-box"><div class="target-num">Ligero</div><div class="target-label">entreno</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Cambios hoy</div>
+          <div class="change-item mantener">Mismo horario que ayer, porciones un poco mas grandes</div>
+          <div class="change-item agregar">Snack de la tarde (jicama, hummus, pepino)</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Horario</div>
+          <div class="timeline">
+            <div class="time-block sleep"><span class="time-label">7:00</span><div class="time-title">Despertar + sabila + luz</div></div>
+            <div class="time-block supplement"><span class="time-label">7:15</span><div class="time-title">DGL 400mg</div></div>
+            <div class="time-block supplement"><span class="time-label">7:30</span><div class="time-title">Tinturas de Ale</div></div>
+            <div class="time-block meal"><span class="time-label">8:00</span><div class="time-title">Desayuno + Jugo 1 + suplementos AM</div><div class="time-detail">Pancakes proteicos (huevo + avena + whey + platano)</div></div>
+            <div class="time-block"><span class="time-label">9:00</span><div class="time-title">Cafe #1</div></div>
+            <div class="time-block meal"><span class="time-label">10:30</span><div class="time-title">LGG + GOS + berries</div></div>
+            <div class="time-block"><span class="time-label">12:00</span><div class="time-title">Cafe #2</div></div>
+            <div class="time-block supplement"><span class="time-label">13:45</span><div class="time-title">DGL 400mg</div></div>
+            <div class="time-block meal"><span class="time-label">14:00</span><div class="time-title">Comida completa + ensalada "Jugo 2"</div><div class="time-detail">Pollo/salmon 200g + arroz + ensalada</div><div class="time-detail pill-list"><span class="pill">Zinc carnosine 75mg</span><span class="pill">Alcachofa 500mg</span></div></div>
+            <div class="time-block supplement"><span class="time-label">16:30</span><div class="time-title">Psyllium + Vit C + snack</div><div class="time-detail">Jicama con limon o hummus con verduras</div></div>
+            <div class="time-block supplement"><span class="time-label">19:00</span><div class="time-title">Tinturas de Ale</div></div>
+            <div class="time-block meal"><span class="time-label">20:00</span><div class="time-title">Cena + Jugo 3 + suplementos noche</div><div class="time-detail">Crema de verdura o sopa</div><div class="time-detail pill-list"><span class="pill">L-glutamina 5g</span><span class="pill">Omega-3 1g</span><span class="pill">Zinc carnosine 75mg</span></div></div>
+            <div class="time-block sleep"><span class="time-label">21:30</span><div class="time-title">SNC + magnesio → dormir 22:30</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Entreno</div>
+          <div class="alert alert-info">Yoga o zona 2 suave (30 min). Nada intenso.</div>
+        </div>
+      </div>
+
+      <!-- DIA 5: MIE 4 -->
+      <div class="trans-day" id="tday-4">
+        <span class="phase-label phase-3">Fase 3 — Plan completo</span>
+        <div class="targets-grid">
+          <div class="target-box"><div class="target-num">~2,400</div><div class="target-label">kcal</div></div>
+          <div class="target-box"><div class="target-num">~160g</div><div class="target-label">proteina</div></div>
+          <div class="target-box"><div class="target-num">Normal</div><div class="target-label">entreno</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Cambios hoy</div>
+          <div class="change-item agregar">Porciones completas (250g proteina en comida)</div>
+          <div class="change-item agregar">Cafe #3</div>
+          <div class="change-item agregar">Entreno intensidad 70-80%</div>
+          <div class="change-item mantener">Tinturas de Ale siguen hasta Jun 8</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Horario</div>
+          <div class="alert alert-good">Sigue el horario completo del plan (AM o PM segun tu dia). Baja para verlo.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Entreno</div>
+          <div class="alert alert-info">Fuerza lower: intensidad 70-80%.<br>Vapor + sal Epsom.</div>
+        </div>
+      </div>
+
+      <!-- DIA 6: JUE 5 -->
+      <div class="trans-day" id="tday-5">
+        <span class="phase-label phase-3">Fase 3 — Plan completo</span>
+        <div class="targets-grid">
+          <div class="target-box"><div class="target-num">~2,400</div><div class="target-label">kcal</div></div>
+          <div class="target-box"><div class="target-num">~170g</div><div class="target-label">proteina</div></div>
+          <div class="target-box"><div class="target-num">Yoga</div><div class="target-label">entreno</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Hoy</div>
+          <div class="alert alert-good">Velocidad crucero. Sigue el horario completo del plan abajo.</div>
+          <div class="change-item mantener">Horario completo (AM o PM)</div>
+          <div class="change-item mantener">Yoga 60 min</div>
+          <div class="change-item mantener">Todos los suplementos, todas las comidas</div>
+        </div>
+      </div>
+
+      <!-- DIA 7: VIE 6 -->
+      <div class="trans-day" id="tday-6">
+        <span class="phase-label phase-3">Fase 3 — Plan completo</span>
+        <div class="targets-grid">
+          <div class="target-box"><div class="target-num">~2,600</div><div class="target-label">kcal</div></div>
+          <div class="target-box"><div class="target-num">~180g</div><div class="target-label">proteina</div></div>
+          <div class="target-box"><div class="target-num">Full</div><div class="target-label">entreno</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Transicion completa</div>
+          <div class="alert alert-good">Ultimo dia de transicion. A partir de manana estas en el plan completo.</div>
+          <div class="change-item mantener">Fuerza full body 80-90%</div>
+          <div class="change-item mantener">180g proteina, porciones completas</div>
+          <div class="change-item mantener">Tinturas de Ale hasta Jun 8</div>
+        </div>
+      </div>
+
+      <!-- Alertas fijas -->
+      <div class="card" style="margin-top:8px;">
+        <div class="card-title">Senales</div>
+        <div class="alert alert-bad" style="margin-bottom:8px;">
+          <strong>Ir mas lento si:</strong> nausea post-comida, dolor gastrico, fatiga extrema en gym, diarrea
+        </div>
+        <div class="alert alert-good">
+          <strong>Vas bien si:</strong> digestion OK, energia estable, heces formandose, sin mareo
+        </div>
+      </div>
+
+      <div class="section-label" style="text-align:center; color:var(--text-light);">&#8595; Horario completo del plan abajo &#8595;</div>
+
+    </div>
+
+    <!-- ==================== SCHEDULE (plan completo) ==================== -->
     <div class="section-label">Horario del dia</div>
 
     <div class="toggle-group">
       <button class="toggle-btn active" id="btnAM" onclick="switchSchedule('am')">Entreno AM</button>
       <button class="toggle-btn" id="btnPM" onclick="switchSchedule('pm')">Entreno PM</button>
+      <button class="toggle-btn" id="btnRest" onclick="switchSchedule('rest')">Sin entreno</button>
     </div>
 
     <!-- AM Schedule -->
@@ -120,7 +391,6 @@
           <div class="time-title">Pre-entreno</div>
           <div class="time-detail pill-list">
             <span class="pill">DGL 400mg <small>masticar</small></span>
-            <span class="pill">Psyllium 5g <small>+ 2 vasos agua</small></span>
           </div>
         </div>
         <div class="time-block training" data-hour="7.50">
@@ -138,6 +408,7 @@
           <div class="time-title">Desayuno + Jugo 1</div>
           <div class="time-detail">~50g proteina (omelette / pancakes / tacos)<br>Cafe #1</div>
           <div class="time-detail pill-list">
+            <span class="pill">Psyllium 5g <small>+ 2 vasos agua</small></span>
             <span class="pill">Omega-3 2g</span>
             <span class="pill">Vit D3 4000 IU</span>
             <span class="pill">Creatina 5g</span>
@@ -153,6 +424,11 @@
             <span class="pill accent">LGG 10B CFU</span>
             <span class="pill accent">GOS 3-5g</span>
           </div>
+        </div>
+        <div class="time-block supplement" data-hour="13.75">
+          <span class="time-label">13:45</span>
+          <div class="time-title">DGL 400mg</div>
+          <div class="time-detail">Masticar, 15 min antes de comer</div>
         </div>
         <div class="time-block meal" data-hour="14.00">
           <span class="time-label">14:00</span>
@@ -177,6 +453,7 @@
           <div class="time-title">Cena ligera + Jugo 3</div>
           <div class="time-detail">~45g proteina (crema / sopa / proteina + verdura)<br>Agregar al Jugo 3: mostaza + pimienta AL SERVIR</div>
           <div class="time-detail pill-list">
+            <span class="pill">Zinc carnosine 75mg</span>
             <span class="pill">L-glutamina 5g <small>en caldo</small></span>
             <span class="pill">Omega-3 1g</span>
           </div>
@@ -226,9 +503,9 @@
             <span class="pill">Vit C 500mg</span>
           </div>
         </div>
-        <div class="time-block supplement" data-hour="8.50">
-          <span class="time-label">8:30</span>
-          <div class="time-title">Cafe #1</div>
+        <div class="time-block supplement" data-hour="9.00">
+          <span class="time-label">9:00</span>
+          <div class="time-title">Cafe #1 + Trabajo</div>
           <div class="time-detail">90+ min despues de despertar<br>#2 y #3 antes de las 4pm, nunca en ayunas</div>
         </div>
         <div class="time-block supplement" data-hour="10.25">
@@ -239,6 +516,11 @@
             <span class="pill accent">LGG 10B CFU</span>
             <span class="pill accent">GOS 3-5g</span>
           </div>
+        </div>
+        <div class="time-block supplement" data-hour="13.75">
+          <span class="time-label">13:45</span>
+          <div class="time-title">DGL 400mg</div>
+          <div class="time-detail">Masticar, 15 min antes de comer</div>
         </div>
         <div class="time-block meal" data-hour="14.00">
           <span class="time-label">14:00</span>
@@ -273,7 +555,101 @@
           <div class="time-title">Cena: Shake + Jugo 3</div>
           <div class="time-detail">Isopure + platano o avena (no en estomago vacio)<br>Agregar al Jugo 3: mostaza + pimienta AL SERVIR</div>
           <div class="time-detail pill-list">
+            <span class="pill">Zinc carnosine 75mg</span>
             <span class="pill">L-glutamina 5g <small>en agua/caldo</small></span>
+            <span class="pill">Omega-3 1g</span>
+          </div>
+        </div>
+        <div class="time-block sleep" data-hour="22.00">
+          <span class="time-label">22:00</span>
+          <div class="time-title">Pre-sueno</div>
+          <div class="time-detail">Papaya fermentada (1/2 taza)</div>
+          <div class="time-detail pill-list">
+            <span class="pill sleep">Magnesio 400mg</span>
+            <span class="pill sleep">Capsulas SNC x2</span>
+          </div>
+        </div>
+        <div class="time-block sleep" data-hour="23.00">
+          <span class="time-label">23:00</span>
+          <div class="time-title">Dormir</div>
+          <div class="time-detail">Cuarto oscuro, 18-19°C, sin pantallas desde 22:30</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rest Schedule -->
+    <div class="card schedule" id="scheduleRest">
+      <div class="timeline">
+        <div class="time-block sleep" data-hour="7.50">
+          <span class="time-label">7:30</span>
+          <div class="time-title">Despertar</div>
+          <div class="time-detail">Agua caliente + sabila (1-2 vasos)<br>Luz solar 10-15 min</div>
+        </div>
+        <div class="time-block supplement" data-hour="7.75">
+          <span class="time-label">7:45</span>
+          <div class="time-title">Rutina AM</div>
+          <div class="time-detail pill-list">
+            <span class="pill">DGL 400mg <small>masticar</small></span>
+            <span class="pill">Psyllium 5g <small>+ 2 vasos agua</small></span>
+          </div>
+        </div>
+        <div class="time-block meal" data-hour="8.00">
+          <span class="time-label">8:00</span>
+          <div class="time-title">Desayuno + Jugo 1</div>
+          <div class="time-detail">~50g proteina (omelette / pancakes / tacos)<br>Tinturas Ale a las 8:15 (si aplican)</div>
+          <div class="time-detail pill-list">
+            <span class="pill">Omega-3 2g</span>
+            <span class="pill">Vit D3 4000 IU</span>
+            <span class="pill">Creatina 5g</span>
+            <span class="pill">Complejo B</span>
+            <span class="pill">Vit C 500mg</span>
+          </div>
+        </div>
+        <div class="time-block supplement" data-hour="9.00">
+          <span class="time-label">9:00</span>
+          <div class="time-title">Cafe #1 + Trabajo</div>
+          <div class="time-detail">90+ min despues de despertar</div>
+        </div>
+        <div class="time-block supplement" data-hour="10.25">
+          <span class="time-label">10:15</span>
+          <div class="time-title">Probiotico + snack</div>
+          <div class="time-detail">Fruta / nueces / berries. Cafe #2</div>
+          <div class="time-detail pill-list">
+            <span class="pill accent">LGG 10B CFU</span>
+            <span class="pill accent">GOS 3-5g</span>
+          </div>
+        </div>
+        <div class="time-block"><span class="time-label">12:00</span><div class="time-title">Cafe #3</div></div>
+        <div class="time-block supplement" data-hour="13.75">
+          <span class="time-label">13:45</span>
+          <div class="time-title">DGL 400mg</div>
+          <div class="time-detail">Masticar, 15 min antes de comer</div>
+        </div>
+        <div class="time-block meal" data-hour="14.00">
+          <span class="time-label">14:00</span>
+          <div class="time-title">Comida + ensalada "Jugo 2"</div>
+          <div class="time-detail">~75g proteina (plato fuerte)<br>Vinagre de manzana con agua</div>
+          <div class="time-detail pill-list">
+            <span class="pill">Zinc carnosine 75mg</span>
+            <span class="pill">Alcachofa 500mg</span>
+          </div>
+        </div>
+        <div class="time-block supplement" data-hour="16.50">
+          <span class="time-label">16:30</span>
+          <div class="time-title">Tarde</div>
+          <div class="time-detail">Bebida cayena (miel + cayena + vinagre + 500ml agua)</div>
+          <div class="time-detail pill-list">
+            <span class="pill">Psyllium 5g <small>+ agua</small></span>
+            <span class="pill">Vit C 500mg</span>
+          </div>
+        </div>
+        <div class="time-block meal" data-hour="20.00">
+          <span class="time-label">20:00</span>
+          <div class="time-title">Cena ligera + Jugo 3</div>
+          <div class="time-detail">~45g proteina (crema / sopa / proteina + verdura)<br>Agregar al Jugo 3: mostaza + pimienta AL SERVIR</div>
+          <div class="time-detail pill-list">
+            <span class="pill">Zinc carnosine 75mg</span>
+            <span class="pill">L-glutamina 5g <small>en caldo</small></span>
             <span class="pill">Omega-3 1g</span>
           </div>
         </div>
@@ -334,40 +710,13 @@
         <div class="wg-header">Tiempo</div>
         <div class="wg-header">Vapor</div>
 
-        <div class="wg-day" data-dow="1">Lun</div>
-        <div data-dow="1">Fuerza upper</div>
-        <div data-dow="1">60 min</div>
-        <div data-dow="1"><span class="vapor-dot yes"></span></div>
-
-        <div class="wg-day" data-dow="2">Mar</div>
-        <div data-dow="2">Hyrox / HIIT</div>
-        <div data-dow="2">45-60 min</div>
-        <div data-dow="2"><span class="vapor-dot opt"></span></div>
-
-        <div class="wg-day" data-dow="3">Mie</div>
-        <div data-dow="3">Fuerza lower</div>
-        <div data-dow="3">60 min</div>
-        <div data-dow="3"><span class="vapor-dot yes"></span></div>
-
-        <div class="wg-day" data-dow="4">Jue</div>
-        <div data-dow="4">Yoga</div>
-        <div data-dow="4">60 min</div>
-        <div data-dow="4"><span class="vapor-dot no"></span></div>
-
-        <div class="wg-day" data-dow="5">Vie</div>
-        <div data-dow="5">Fuerza full body</div>
-        <div data-dow="5">60 min</div>
-        <div data-dow="5"><span class="vapor-dot yes"></span></div>
-
-        <div class="wg-day" data-dow="6">Sab</div>
-        <div data-dow="6">Correr zona 2</div>
-        <div data-dow="6">40-60 min</div>
-        <div data-dow="6"><span class="vapor-dot opt"></span></div>
-
-        <div class="wg-day" data-dow="0">Dom</div>
-        <div data-dow="0">Descanso</div>
-        <div data-dow="0">&mdash;</div>
-        <div data-dow="0"><span class="vapor-dot no"></span></div>
+        <div class="wg-day" data-dow="1">Lun</div><div data-dow="1">Fuerza upper</div><div data-dow="1">60 min</div><div data-dow="1"><span class="vapor-dot yes"></span></div>
+        <div class="wg-day" data-dow="2">Mar</div><div data-dow="2">Hyrox / HIIT</div><div data-dow="2">45-60 min</div><div data-dow="2"><span class="vapor-dot opt"></span></div>
+        <div class="wg-day" data-dow="3">Mie</div><div data-dow="3">Fuerza lower</div><div data-dow="3">60 min</div><div data-dow="3"><span class="vapor-dot yes"></span></div>
+        <div class="wg-day" data-dow="4">Jue</div><div data-dow="4">Yoga</div><div data-dow="4">60 min</div><div data-dow="4"><span class="vapor-dot no"></span></div>
+        <div class="wg-day" data-dow="5">Vie</div><div data-dow="5">Fuerza full body</div><div data-dow="5">60 min</div><div data-dow="5"><span class="vapor-dot yes"></span></div>
+        <div class="wg-day" data-dow="6">Sab</div><div data-dow="6">Correr zona 2</div><div data-dow="6">40-60 min</div><div data-dow="6"><span class="vapor-dot opt"></span></div>
+        <div class="wg-day" data-dow="0">Dom</div><div data-dow="0">Descanso</div><div data-dow="0">&mdash;</div><div data-dow="0"><span class="vapor-dot no"></span></div>
       </div>
     </div>
 
@@ -428,85 +777,114 @@
   </nav>
 
   <script>
+    // ---- Transition dates: May 31 - Jun 6, 2026 ----
+    var TRANS_START = new Date(2026, 4, 31); // May 31
+    var TRANS_END = new Date(2026, 5, 6);    // Jun 6
+
+    function getTransDay() {
+      var now = new Date();
+      var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      if (today < TRANS_START || today > TRANS_END) return -1;
+      return Math.floor((today - TRANS_START) / 86400000);
+    }
+
+    function showTransDay(index) {
+      document.querySelectorAll('.trans-day').forEach(function(d) { d.classList.remove('active'); });
+      document.getElementById('tday-' + index).classList.add('active');
+
+      document.querySelectorAll('.day-btn[data-tday]').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelector('.day-btn[data-tday="' + index + '"]').classList.add('active');
+
+      // Progress bar
+      for (var i = 0; i < 7; i++) {
+        var seg = document.getElementById('tseg-' + i);
+        seg.classList.remove('done', 'current');
+        if (i < index) seg.classList.add('done');
+        if (i === index) seg.classList.add('current');
+      }
+      document.getElementById('transProgress').textContent = 'Dia ' + (index + 1) + ' de 7';
+
+      // Mark past days
+      var currentDay = getTransDay();
+      document.querySelectorAll('.day-btn[data-tday]').forEach(function(b) {
+        var d = parseInt(b.getAttribute('data-tday'));
+        b.classList.toggle('past', currentDay >= 0 && d < currentDay);
+      });
+    }
+
+    // Init transition
+    (function() {
+      var transDay = getTransDay();
+      var transSection = document.getElementById('transSection');
+      if (transDay >= 0) {
+        transSection.classList.add('active');
+        showTransDay(transDay);
+      }
+    })();
+
     // ---- Date display ----
     (function() {
-      const now = new Date();
-      const hour = now.getHours();
-      const greetEl = document.getElementById('greeting');
+      var now = new Date();
+      var hour = now.getHours();
+      var greetEl = document.getElementById('greeting');
       if (hour < 12) greetEl.textContent = 'Buenos dias, Iker';
       else if (hour < 18) greetEl.textContent = 'Buenas tardes, Iker';
       else greetEl.textContent = 'Buenas noches, Iker';
 
-      const days = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
-      const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+      var days = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
+      var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
       document.getElementById('dateDisplay').textContent =
         days[now.getDay()] + ' ' + now.getDate() + ' de ' + months[now.getMonth()];
     })();
 
     // ---- Schedule toggle ----
     function switchSchedule(mode) {
-      const am = document.getElementById('scheduleAM');
-      const pm = document.getElementById('schedulePM');
-      const btnAM = document.getElementById('btnAM');
-      const btnPM = document.getElementById('btnPM');
+      var schedules = ['scheduleAM', 'schedulePM', 'scheduleRest'];
+      var buttons = ['btnAM', 'btnPM', 'btnRest'];
+      var activeId = mode === 'am' ? 0 : mode === 'pm' ? 1 : 2;
 
-      if (mode === 'am') {
-        am.classList.add('visible');
-        pm.classList.remove('visible');
-        btnAM.classList.add('active');
-        btnPM.classList.remove('active');
-      } else {
-        pm.classList.add('visible');
-        am.classList.remove('visible');
-        btnPM.classList.add('active');
-        btnAM.classList.remove('active');
-      }
+      schedules.forEach(function(id, i) {
+        document.getElementById(id).classList.toggle('visible', i === activeId);
+      });
+      buttons.forEach(function(id, i) {
+        document.getElementById(id).classList.toggle('active', i === activeId);
+      });
       highlightNow();
     }
 
     // ---- Highlight current time block ----
     function highlightNow() {
-      const now = new Date();
-      const currentHour = now.getHours() + now.getMinutes() / 60;
+      var now = new Date();
+      var currentHour = now.getHours() + now.getMinutes() / 60;
 
-      // Process both schedules
-      ['scheduleAM', 'schedulePM'].forEach(function(scheduleId) {
-        const schedule = document.getElementById(scheduleId);
-        const blocks = schedule.querySelectorAll('.time-block');
-
-        // Remove existing highlights
+      ['scheduleAM', 'schedulePM', 'scheduleRest'].forEach(function(scheduleId) {
+        var schedule = document.getElementById(scheduleId);
+        var blocks = schedule.querySelectorAll('.time-block');
         blocks.forEach(function(b) { b.classList.remove('now'); });
 
-        // Find the current block: last block whose time <= current time
-        let currentBlock = null;
+        var currentBlock = null;
         blocks.forEach(function(block) {
-          const blockHour = parseFloat(block.getAttribute('data-hour'));
-          if (currentHour >= blockHour) {
-            currentBlock = block;
-          }
+          var blockHour = parseFloat(block.getAttribute('data-hour'));
+          if (currentHour >= blockHour) currentBlock = block;
         });
 
         if (currentBlock && schedule.classList.contains('visible')) {
           currentBlock.classList.add('now');
-          // Update indicator
-          const title = currentBlock.querySelector('.time-title').textContent;
-          const label = currentBlock.querySelector('.time-label').textContent;
+          var title = currentBlock.querySelector('.time-title').textContent;
+          var label = currentBlock.querySelector('.time-label').textContent;
           document.getElementById('nowIndicator').textContent = 'Ahora: ' + label + ' — ' + title;
         }
       });
     }
 
     highlightNow();
-    setInterval(highlightNow, 60000); // Update every minute
+    setInterval(highlightNow, 60000);
 
     // ---- Highlight today in week grid ----
     (function() {
-      const today = new Date().getDay(); // 0=Sun
-      const cells = document.querySelectorAll('#weekGrid [data-dow]');
-      cells.forEach(function(cell) {
-        if (parseInt(cell.getAttribute('data-dow')) === today) {
-          cell.classList.add('wg-today');
-        }
+      var today = new Date().getDay();
+      document.querySelectorAll('#weekGrid [data-dow]').forEach(function(cell) {
+        if (parseInt(cell.getAttribute('data-dow')) === today) cell.classList.add('wg-today');
       });
     })();
   </script>
